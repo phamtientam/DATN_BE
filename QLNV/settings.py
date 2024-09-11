@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'dashboards',
     'level',
     'job',
+    'department',
     'rest_framework',
     'corsheaders',
 ]

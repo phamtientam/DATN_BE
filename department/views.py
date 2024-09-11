@@ -46,26 +46,27 @@ def fetch_data(module):
 
 
 @csrf_exempt
-def get_list_job_position(request):
+def get_list_department(request):
     try:
         if request.method == 'GET':
-            df_job = fetch_data(FILE_NAME_JOB)
-            list_job_name = df_job["name"].to_list()
-            return JsonResponse(list_job_name, safe=False)
+            df_department = fetch_data(FILE_NAME_DEPARTMENT)
+            print(df_department)
+            list_department = df_department["display_name"].to_list()
+            return JsonResponse(list_department, safe=False)
     except:
         return HttpResponse(status=404)
 
 
 @csrf_exempt
-def analyze_count_job_by_employee(request):
+def analyze_count_department_by_employee(request):
     try:
         if request.method == 'GET':
-            df_job = fetch_data(FILE_NAME_JOB)
+            df_department = fetch_data(FILE_NAME_DEPARTMENT)
             df_employee = fetch_data(FILE_NAME_EMPLOYEE)
-            list_level_name = df_job["name"].to_list()
+            list_level_name = df_department["display_name"].to_list()
             results = []
-            job_name_have_data = df_employee[df_employee["job_name"] != 'False']
-            info_job_by_employee = job_name_have_data["job_name"].value_counts().sort_index()
+            job_name_have_data = df_employee[df_employee["department_name"] != 'False']
+            info_job_by_employee = job_name_have_data["department_name"].value_counts().sort_index()
             job_name_epl = info_job_by_employee.index.tolist()
             counts_job_name_epl = info_job_by_employee.values.tolist()
             map_data = []
@@ -87,18 +88,19 @@ def analyze_count_job_by_employee(request):
             return JsonResponse(custom_data, safe=False)
     except:
         return HttpResponse(status=404)
-
-
-@csrf_exempt
-def get_employee_by_job(request):
+#
+#
+# @csrf_exempt
+def get_employee_by_department(request):
     try:
         if request.method == 'GET':
-            job_name = request.GET.get('job_name', None)
+            department_name = request.GET.get('department_name', None)
             df_employee = fetch_data(FILE_NAME_EMPLOYEE)
             search_employee = df_employee[
-                df_employee["job_name"] == job_name
+                df_employee["department_name"] == department_name
             ]
-            list_data = [list(x) for x in search_employee[["name", "department_name", "job_name"]].values]
+            print(search_employee)
+            list_data = [list(x) for x in search_employee[["name", "department_name", "work_email", "job_nameq"]].values]
             return JsonResponse(list_data, safe=False)
     except:
         return HttpResponse(status=404)
