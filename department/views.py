@@ -90,7 +90,7 @@ def analyze_count_department_by_employee(request):
         return HttpResponse(status=404)
 #
 #
-# @csrf_exempt
+@csrf_exempt
 def get_employee_by_department(request):
     try:
         if request.method == 'GET':
@@ -100,7 +100,7 @@ def get_employee_by_department(request):
                 df_employee["department_name"] == department_name
             ]
             print(search_employee)
-            list_data = [list(x) for x in search_employee[["name", "department_name", "work_email", "job_nameq"]].values]
+            list_data = [list(x) for x in search_employee[["name", "department_name", "work_email", "job_name"]].values]
             return JsonResponse(list_data, safe=False)
     except:
         return HttpResponse(status=404)
