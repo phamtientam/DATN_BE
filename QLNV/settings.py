@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'level',
     'job',
     'department',
+    'project',
     'rest_framework',
     'corsheaders',
 ]
