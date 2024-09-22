@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: QLNV
+
+  web:
+    build: .
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    env_file:
+    - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:mypassword@db:5432/QLNV
+
+volumes:
+  postgres_data: {}
+
+networks:
+  db:
+    driver: bridge
